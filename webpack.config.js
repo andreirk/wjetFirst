@@ -18,6 +18,11 @@ module.exports = function(env) {
 			filename: "myapp.js"
 		},
 		devtool: "inline-source-map",
+		devServer: {
+			
+			historyApiFallback: true,
+			
+		  },
 		module: {
 			rules: [
 				{

@@ -1,10 +1,11 @@
 import "./styles/app.css";
-import {JetApp} from "webix-jet";
+import {JetApp,UrlRouter} from "webix-jet";
 
 webix.ready(() => {
 	var app = new JetApp({
 		id:			APPNAME,
 		version:	VERSION,
+		router:     UrlRouter,
 		start:		"/top/start"
 	});
 	app.render();
