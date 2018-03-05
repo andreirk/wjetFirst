@@ -5,8 +5,9 @@ webix.ready(() => {
 	var app = new JetApp({
 		id:			APPNAME,
 		version:	VERSION,
-		router:     UrlRouter,
-		start:		"/top/start"
+		// router:     UrlRouter,
+		start:		"/top/contacts",
+		debug: true,
 	});
 	app.render();
 

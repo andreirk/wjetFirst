@@ -19,8 +19,10 @@ module.exports = function(env) {
 		},
 		devtool: "inline-source-map",
 		devServer: {
-			
-			historyApiFallback: true,
+			proxy: {
+				"/api/v1": "http://localhost:8096"
+			  }
+			// historyApiFallback: true,
 			
 		  },
 		module: {
