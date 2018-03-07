@@ -19,10 +19,10 @@ const View =   {
         { id:"DueDate",   header: ["DueDate Title", {content:"dateFilter"}, ], editor:'date',},
         { id:"Details",    header: ["Details", {content:"textFilter"}, ], editor:'text',},
 		{ id:"ContactID",   header: ["Contact", {content:"selectFilter"}, ], editor:'text',  },
-		{ id: "edit",  template:function(obj, common){
+		{ id: "edit", header:'', template:function(obj, common){
             return `<span data='${obj.id}' name='edit' class='edit_button webixtype_form'> Edit </span>`;
       	 }}, 
-		{ id: "trash",  template:function(obj, common){
+		{ id: "trash", header:'', template:function(obj, common){
             return `<span data='${obj.id}' name='del' class='del_button webixtype_form'> Del </span>`;
       	 }}, 
     ],
@@ -39,10 +39,7 @@ const View =   {
 			// TODO	is it right way to get value
 			const _this = this;
 			const itemID = ev.target.attributes.data.value
-
             const toFillForm = this.data.getItem(itemID)
-
-            console.log('costom', this.config.customDataStore)
 
             const editFunction = (obj) => {
                 const values = $$(ACTIVITY_FORM_ID).getValues();

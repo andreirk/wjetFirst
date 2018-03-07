@@ -9,15 +9,13 @@ export default class contactList extends JetView{
             autoConfig:true,
             select: true,
             template: (obj) => {
-                let result = '';
-                let fullName = obj.LastName && obj.FirstName ? `${obj.FirstName} ${obj.LastName}` : "No name";
-                result += `<a route="/top/contacts/contact?id=${obj.id}"> ${fullName} </a>`;
+                const fullName = obj.LastName && obj.FirstName ? `${obj.FirstName} ${obj.LastName}` : "No name";
+                const result = `${fullName}`;
                 return result;
             },
             on: {
-                onItemClick: function(id){
-                    this.show(`/top/contacts/contact/top`)
-                    console.log('id here',id)
+                onItemClick: (id) => {
+                    this.show(`/top/contacts/contact?id=${id}`)
                 }
             },
             maxWidth: 300,

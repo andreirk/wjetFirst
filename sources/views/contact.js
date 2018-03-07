@@ -27,7 +27,7 @@ export default class ContactView extends JetView{
 	}
 	init(view, url){
         console.log(url);
-        this.show("/top/contacts/contact?id=1")
+        // this.app.show("/top/contacts/contact/?id=1")
         view.setValues( getData(1) )
         // 
     }
@@ -40,7 +40,7 @@ export default class ContactView extends JetView{
             
         } else {
             // todo
-            this.show("./contact?id=1")
+            // this.show("./contact?id=1")
         }
         
     }
