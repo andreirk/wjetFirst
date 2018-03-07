@@ -39,6 +39,7 @@ export default class ContactView extends JetView{
             this.getRoot().setValues( getData(id) )
             
         } else {
+            // todo
             this.show("./contact?id=1")
         }
         

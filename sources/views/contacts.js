@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
-import {contacts} from "models/records";
-import contactList from './contactList'
+
+import contactList from '../components/contactList'
 
 export default class Contacts extends JetView{
 	config(){

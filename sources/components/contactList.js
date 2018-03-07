@@ -16,6 +16,7 @@ export default class contactList extends JetView{
             },
             on: {
                 onItemClick: function(id){
+                    this.show(`/top/contacts/contact/top`)
                     console.log('id here',id)
                 }
             },
