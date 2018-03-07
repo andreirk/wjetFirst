@@ -13,10 +13,13 @@ const View =   {
     id: 'mydata',
   
     columns:[
-        { id:"TypeID",    header:"TypeID",    },
+		{id: 'Complited', template: function (obj) {
+			return '<input type="checkbox" class="activity_completed">'
+        }},
+        { id:"TypeID",    header:["Type", {content:"selectFilter"}]   },
         { id:"DueDate",   header: ["DueDate Title", {content:"dateFilter"}, ], editor:'date',},
         { id:"Details",    header: ["Details", {content:"textFilter"}, ], editor:'text',},
-		{ id:"ContactID",   header: ["ContactID", {content:"textFilter"}, ], editor:'text',  },
+		{ id:"ContactID",   header: ["Contact", {content:"selectFilter"}, ], editor:'text',  },
 		{ id: "edit",  template:function(obj, common){
             return `<span data='${obj.id}' name='edit' class='edit_button webixtype_form'> Edit </span>`;
       	 }}, 
@@ -42,7 +45,6 @@ const View =   {
             const toFillForm = this.data.getItem(itemID)
 			console.log('edit here I am!!!!!!!!!!!!!!!!!!!!!!!', {ev, id, data:this.data.pull, dataFromTarget: itemID, currentData:this.data.getItem(itemID)});
             console.log('costom', this.config.customDataStore)
-
 
             const editFunction = (obj) => {
                 const values = $$(ACTIVITY_FORM_ID).getValues();
@@ -85,7 +87,6 @@ const View =   {
                         case "1":
 
                             break;
-
                     }
                 }
             });
