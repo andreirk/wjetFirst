@@ -9,7 +9,6 @@ const ACTIVITY_FORM_ID = 'ACTIVITY_FORM'
 
 const View =   {
     view:"datatable",
-    // autoConfig: true,
     id: 'mydata',
   
     columns:[
@@ -27,7 +26,6 @@ const View =   {
             return `<span data='${obj.id}' name='del' class='del_button webixtype_form'> Del </span>`;
       	 }}, 
     ],
-    // editable: true,
 
     rules: {
         "votes": webix.rules.isNumber
@@ -41,9 +39,9 @@ const View =   {
 			// TODO	is it right way to get value
 			const _this = this;
 			const itemID = ev.target.attributes.data.value
-			console.log('value', itemID);
+
             const toFillForm = this.data.getItem(itemID)
-			console.log('edit here I am!!!!!!!!!!!!!!!!!!!!!!!', {ev, id, data:this.data.pull, dataFromTarget: itemID, currentData:this.data.getItem(itemID)});
+
             console.log('costom', this.config.customDataStore)
 
             const editFunction = (obj) => {
@@ -130,7 +128,6 @@ export default class ActivitiesView extends JetView{
 	init(view, url){
 		console.log(url);
 		view.queryView({ view:"datatable" }).parse(activities);
-        
     }
     urlChange(view, url){
         

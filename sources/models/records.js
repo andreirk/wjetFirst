@@ -22,7 +22,6 @@ export const status = new webix.DataCollection({
 });
 
 
-
 export const getData = (id) => {
 	return contacts.getItem(id);
 }
@@ -39,10 +38,12 @@ export const getActivityType = (id) => {
 }
 
 export function getActivityTypes() {
+	// TODO
     // return activityTypes.data.serialize()
 	return ['Type 1', 'Type 2']
 }
 export function getContactTypes() {
+    // TODO
     // return contacts.data.serialize()
 	return ['contact 1', 'contact 2']
 }
