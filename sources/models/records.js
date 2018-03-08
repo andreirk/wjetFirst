@@ -1,20 +1,36 @@
 
-const contactUrl = '/api/v1/contacts/';
-const activitytUrl = '/api/v1/activities/';
-const activitiesTypestUrl = '/api/v1/activitytypes/';
-const statusesUrl = '/api/v1/statuses/';
+export const contactUrl = '/api/v1/contacts/';
+export const activitytUrl = '/api/v1/activities/';
+export const activitiesTypestUrl = '/api/v1/activitytypes/';
+export const statusesUrl = '/api/v1/statuses/';
 
 
 export const contacts = new webix.DataCollection({ 
-	url: contactUrl
+	url: contactUrl,
+    scheme: {
+        $init:function(obj){
+            obj.value = obj.FirstName ? obj.FirstName : obj.Email;
+        }
+    }
+
 });
 
 export const activities = new webix.DataCollection({ 
-	url: activitytUrl
+	url: activitytUrl,
+    scheme: {
+        $init:function(obj){
+            obj.complited = obj.State === 'Open'
+        }
+    }
 });
 
 export const activityTypes = new webix.DataCollection({
-	url: activitiesTypestUrl
+	url: activitiesTypestUrl,
+    scheme: {
+        $init:function(obj){
+             obj.value = obj.Value;
+        }
+    }
 });
 
 export const status = new webix.DataCollection({ 

@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 
 import modalWindow, {ModalWindow, activityForm, activityFormFabric} from '../components/activityWindow'
-import {activities, getActivites, getActivityTypes, getContactTypes } from "../models/records";
+import {activities, getActivites, getActivityTypes, getContactTypes,activityTypes,contacts } from "../models/records";
 
 
 const ACTIVITY_FORM_WINDOW_ID = 'ACTIVITY_FORM_WINDOW';
@@ -12,13 +12,11 @@ const View =   {
     id: 'mydata',
   
     columns:[
-		{id: 'Complited', template: function (obj) {
-			return '<input type="checkbox" class="activity_completed">'
-        }},
-        { id:"TypeID",    header:["Type", {content:"selectFilter"}]   },
+		{id: 'complited', header:'Complited', template:"{common.checkbox()}"},
+        { id:"TypeID",    header:["Type", {content:"selectFilter"}] , collection: activityTypes  },
         { id:"DueDate",   header: ["DueDate Title", {content:"dateFilter"}, ], editor:'date',},
         { id:"Details",    header: ["Details", {content:"textFilter"}, ], editor:'text',},
-		{ id:"ContactID",   header: ["Contact", {content:"selectFilter"}, ], editor:'text',  },
+		{ id:"ContactID",   header: ["Contact", {content:"selectFilter"}, ], collection:contacts, editor:'text',  },
 		{ id: "edit", header:'', template:function(obj, common){
             return `<span data='${obj.id}' name='edit' class='edit_button webixtype_form'> Edit </span>`;
       	 }}, 
@@ -31,13 +29,14 @@ const View =   {
         "votes": webix.rules.isNumber
     },
 	customDataStore: {
-		activityTypes: getActivityTypes(),
+		activityTypes: getContactTypes(),
 		contactTypes: getContactTypes(),
     },
     onClick:{
-        edit_button:function(ev, id){
+        edit_button:function(ev, id, third){
 			// TODO	is it right way to get value
 			const _this = this;
+			console.log('thierd i id', {id, third, ev})
 			const itemID = ev.target.attributes.data.value
             const toFillForm = this.data.getItem(itemID)
 
@@ -47,8 +46,8 @@ const View =   {
                 $$(ACTIVITY_FORM_WINDOW_ID).close();
 
             };
-            const typesOptions =  _this.config.customDataStore.activityTypes;
-            const contactsOptions =  _this.config.customDataStore.contactTypes;
+            const typesOptions = activityTypes;
+            const contactsOptions = contacts;
 
             const cancelFunction = () => { $$(ACTIVITY_FORM_WINDOW_ID).close() }
 
@@ -80,7 +79,6 @@ const View =   {
                             activities.remove(itemID)
                             break;
                         case "1":
-
                             break;
                     }
                 }
@@ -98,9 +96,9 @@ const activitiesHeader = {
             activities.add(values);
             $$(ACTIVITY_FORM_WINDOW_ID).close();
         };
-		const activityTable = $$('mydata');
-        const typesOptions =  activityTable.config.customDataStore.activityTypes;
-        const contactsOptions =  activityTable.config.customDataStore.contactTypes;
+
+        const typesOptions =  activityTypes;
+        const contactsOptions =  contacts;
 
 		const cancelFunction = () => { $$(ACTIVITY_FORM_WINDOW_ID).close() }
 
@@ -109,10 +107,11 @@ const activitiesHeader = {
 			onHandleClickOk: addFunction,
 			onHandleClickCancel: cancelFunction,
 			typesOptions,
-			contactsOptions}
+			contactsOptions
+		}
 		const addForm = activityFormFabric(formConfig)
 
-		const myWindow = webix.ui(new ModalWindow({windowID:ACTIVITY_FORM_WINDOW_ID,headName:'Add', form:addForm}))
+		const myWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_FORM_WINDOW_ID,headName:'Add', form:addForm}))
 		myWindow.show()
 
 	} }]
