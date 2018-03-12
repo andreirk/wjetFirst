@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 
 import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
-import {activities, getActivites, getActivityTypes, getContactTypes,activityTypes,contacts } from "../models/records";
+import {activities, getContactTypes,activityTypes,contacts } from "../models/records";
 
 
 export const ACTIVITY_ADD_FORM_WINDOW_ID = 'ACTIVITY_ADD_FORM_WINDOW';
@@ -10,22 +10,23 @@ export const ACTIVITY_EDIT_FORM_WINDOW_ID = 'ACTIVITY_EDIT_FORM_WINDOW';
 export const ACTIVITY_EDIT_FORM_ID = 'ACTIVITY_EDIT_FORM'
 export const ACTIVITY_ADD_FORM_ID = 'ACTIVITY_ADD_FORM'
 
+
 export const View =   {
     view:"datatable",
     id: 'mydata',
   
     columns:[
-		{id: 'complited', header:'Complited', template:"{common.checkbox()}"},
+		{ id:'complited', header:'Complited', template:"{common.checkbox()}"},
         { id:"TypeID",    header:["Type", {content:"selectFilter"}] , collection: activityTypes  },
         { id:"DueDate",   header: ["DueDate Title", {content:"dateFilter"}, ], editor:'date',},
         { id:"Details",    header: ["Details", {content:"textFilter"}, ], editor:'text',},
 		{ id:"ContactID",   header: ["Contact", {content:"selectFilter"}, ], collection:contacts, editor:'text',  },
 		{ id: "edit", header:'', template:function(obj, common){
             return `<span data='${obj.id}' name='edit' class='edit_button webixtype_form'> Edit </span>`;
-      	 }}, 
+		}},
 		{ id: "trash", header:'', template:function(obj, common){
             return `<span data='${obj.id}' name='del' class='del_button webixtype_form'> Del </span>`;
-      	 }}, 
+		}},
     ],
 
     rules: {
@@ -111,7 +112,6 @@ export default class ActivitiesView extends JetView{
         const addWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_ADD_FORM_WINDOW_ID,headName:'Add', form:addForm}))
 
 		view.queryView({ view:"datatable" }).parse(activities);
-
 
 
     }

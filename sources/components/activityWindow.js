@@ -1,7 +1,5 @@
 
 
-
-
 export function activityFormFabric({formID, onHandleClickOk, onHandleClickCancel, typesOptions, contactsOptions}) {
     return {
         view:"form",

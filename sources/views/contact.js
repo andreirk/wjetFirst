@@ -1,8 +1,8 @@
 import {JetView} from "webix-jet";
-import {data, getData} from "../models/records";
+import { getData} from "../models/records";
 import {View, ACTIVITY_ADD_FORM_WINDOW_ID, ACTIVITY_ADD_FORM_ID, ACTIVITY_EDIT_FORM_ID, ACTIVITY_EDIT_FORM_WINDOW_ID } from './activities';
 import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
-import {activities, getActivites, getActivityTypes, getContactTypes,activityTypes,contacts } from "../models/records";
+import {activities,activityTypes,contacts } from "../models/records";
 
 const contactViewTemplate = (obj) => { 
     
@@ -11,18 +11,18 @@ const contactViewTemplate = (obj) => {
     return `
         <div>
             <div>
-                <span class='webix_icon fa-trash'>
+                <span class='webix_icon fa-trash '>
                     Delete
                 </span>
             </div>
             <div>
-                <span class='webix_icon fa-pencil'>
+                <span data_id='${obj.id}' class='webix_icon fa-pencil contact_edit'>
                     Edit
                 </span>
             </div>
         </div>
 
-        "contact page ${fullName} ${obj.Email}"
+        <div>"contact page ${fullName} ${obj.Email}" </div>
 `
 }
 
@@ -53,15 +53,19 @@ const contactDetails = {
 
 export default class ContactView extends JetView{
 	config(){
-		return { type: 'line', rows: [
-		    {id: 'contact', template: contactViewTemplate},
+		return { type: 'line', rows: [ {id: 'contact', template: contactViewTemplate,
+                onClick: {
+                    contact_edit:  ( event, two, element) => {
+                        const contactID = element.getAttribute("data_id");
+                        this.show(`/top/contacts/contact_edit?id=${contactID}`)
+
+                    }
+            }},
             contactDetails,
             activitiesFooter
         ]  };
 	}
 	init(view, url){
-        console.log(url);
-         // this.app.show("/top/contacts/contact/?id=1")
         view.queryView({ id:"contact" }).setValues( getData(1) )
 
         const editFormConfig = {
