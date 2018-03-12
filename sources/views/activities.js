@@ -1,11 +1,14 @@
 import {JetView} from "webix-jet";
 
-import modalWindow, {ModalWindow, activityForm, activityFormFabric} from '../components/activityWindow'
+import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
 import {activities, getActivites, getActivityTypes, getContactTypes,activityTypes,contacts } from "../models/records";
 
 
-const ACTIVITY_FORM_WINDOW_ID = 'ACTIVITY_FORM_WINDOW';
-const ACTIVITY_FORM_ID = 'ACTIVITY_FORM'
+const ACTIVITY_ADD_FORM_WINDOW_ID = 'ACTIVITY_ADD_FORM_WINDOW';
+const ACTIVITY_EDIT_FORM_WINDOW_ID = 'ACTIVITY_EDIT_FORM_WINDOW';
+
+const ACTIVITY_EDIT_FORM_ID = 'ACTIVITY_EDIT_FORM'
+const ACTIVITY_ADD_FORM_ID = 'ACTIVITY_ADD_FORM'
 
 const View =   {
     view:"datatable",
@@ -33,40 +36,12 @@ const View =   {
 		contactTypes: getContactTypes(),
     },
     onClick:{
-        edit_button:function(ev, id, third){
-			// TODO	is it right way to get value
-			const _this = this;
-			console.log('thierd i id', {id, third, ev})
-			const itemID = ev.target.attributes.data.value
-            const toFillForm = this.data.getItem(itemID)
-
-            const editFunction = (obj) => {
-                const values = $$(ACTIVITY_FORM_ID).getValues();
-                activities.updateItem(itemID, values);
-                $$(ACTIVITY_FORM_WINDOW_ID).close();
-
-            };
-            const typesOptions = activityTypes;
-            const contactsOptions = contacts;
-
-            const cancelFunction = () => { $$(ACTIVITY_FORM_WINDOW_ID).close() }
-
-            const formConfig = {
-                formID : ACTIVITY_FORM_ID ,
-                onHandleClickOk: editFunction,
-                onHandleClickCancel: cancelFunction,
-                typesOptions,
-                contactsOptions}
-
-            const editForm = activityFormFabric(formConfig)
-
-            const myWindow = webix.ui(new ModalWindow({windowID:ACTIVITY_FORM_WINDOW_ID, headName:'Edit', form:editForm}))
-            $$(ACTIVITY_FORM_ID).setValues(toFillForm)
-            myWindow.show()
-		
+        edit_button:function(ev, id){
+            activities.setCursor(id);
+            $$(ACTIVITY_EDIT_FORM_WINDOW_ID).show()
         },
         del_button:function(ev, row){
-						
+
 			var itemID = ev.target.attributes.data.value
             webix.modalbox({
                 title:"It cannot be undone!",
@@ -91,28 +66,9 @@ const View =   {
 
 const activitiesHeader = {
 	cols:[{gravity:5},{view:'button', value:'Add activity', click: function (obj) {
-		const addFunction = (obj) => {
-            const values = $$(ACTIVITY_FORM_ID).getValues();
-            activities.add(values);
-            $$(ACTIVITY_FORM_WINDOW_ID).close();
-        };
 
-        const typesOptions =  activityTypes;
-        const contactsOptions =  contacts;
-
-		const cancelFunction = () => { $$(ACTIVITY_FORM_WINDOW_ID).close() }
-
-		const formConfig = {
-			formID : ACTIVITY_FORM_ID ,
-			onHandleClickOk: addFunction,
-			onHandleClickCancel: cancelFunction,
-			typesOptions,
-			contactsOptions
-		}
-		const addForm = activityFormFabric(formConfig)
-
-		const myWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_FORM_WINDOW_ID,headName:'Add', form:addForm}))
-		myWindow.show()
+        $$(ACTIVITY_ADD_FORM_ID).clear()
+        $$(ACTIVITY_ADD_FORM_WINDOW_ID).show()
 
 	} }]
 }
@@ -122,8 +78,42 @@ export default class ActivitiesView extends JetView{
 		return {rows:[activitiesHeader,View, ]};
 	}
 	init(view, url){
-		console.log(url);
+
+		// edit form init
+        const editFormConfig = {
+            formID : ACTIVITY_EDIT_FORM_ID ,
+            typesOptions : activityTypes,
+            contactsOptions : contacts
+        }
+
+        const editForm = activityFormFabric(editFormConfig)
+        const editWindow = webix.ui(new ModalWindow({windowID:ACTIVITY_EDIT_FORM_WINDOW_ID, headName:'Edit', form:editForm}))
+        $$(ACTIVITY_EDIT_FORM_ID).bind(activities);
+
+        // add form init
+        const addFunction = (obj) => {
+            const values = $$(ACTIVITY_ADD_FORM_ID).getValues();
+            activities.add(values);
+            $$(ACTIVITY_ADD_FORM_WINDOW_ID).hide();
+        };
+
+        const cancelFunction = () => { $$(ACTIVITY_ADD_FORM_WINDOW_ID).hide() }
+
+        const addFormConfig = {
+            formID : ACTIVITY_ADD_FORM_ID ,
+            onHandleClickOk: addFunction,
+            onHandleClickCancel: cancelFunction,
+            typesOptions : activityTypes,
+            contactsOptions :  contacts
+        }
+        const addForm = activityFormFabric(addFormConfig)
+
+        const addWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_ADD_FORM_WINDOW_ID,headName:'Add', form:addForm}))
+
 		view.queryView({ view:"datatable" }).parse(activities);
+
+
+
     }
     urlChange(view, url){
         
