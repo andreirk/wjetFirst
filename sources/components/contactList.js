@@ -26,7 +26,6 @@ export default class contactList extends JetView{
                     view: "button",
                     value: 'Add contact',
                     click:  () => {
-                        // this.app.show(`/top/contacts/contact?id=${null}`)
                         this.show(`/top/contacts/contact_edit?id=${null}`)
 
                     }

@@ -1,8 +1,8 @@
 import {JetView} from "webix-jet";
-import { getData} from "../models/records";
-import {View, ACTIVITY_ADD_FORM_WINDOW_ID, ACTIVITY_ADD_FORM_ID, ACTIVITY_EDIT_FORM_ID, ACTIVITY_EDIT_FORM_WINDOW_ID } from './activities';
+import {View as Activities, ACTIVITY_ADD_FORM_WINDOW_ID, ACTIVITY_ADD_FORM_ID, ACTIVITY_EDIT_FORM_ID, ACTIVITY_EDIT_FORM_WINDOW_ID } from './activities';
 import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
-import {activities,activityTypes,contacts } from "../models/records";
+import  FilesTable from '../components/filesTable'
+import {activities,activityTypes,contacts, getData} from "../models/records";
 
 const contactViewTemplate = (obj) => { 
     
@@ -11,7 +11,7 @@ const contactViewTemplate = (obj) => {
     return `
         <div>
             <div>
-                <span class='webix_icon fa-trash '>
+                <span data_id='${obj.id}' class='webix_icon fa-trash contact_delete'>
                     Delete
                 </span>
             </div>
@@ -41,12 +41,18 @@ const contactDetails = {
     {
        id: 'contactActivity',
        header: 'Activities',
-        body: View
+        body: {
+           rows: [
+               Activities,
+               activitiesFooter
+           ]
+        }
     },
     {
         id: 'contactFiles',
         header: 'Files',
-        template: 'files'
+        body: FilesTable,
+
     }
 ]
 }
@@ -59,10 +65,16 @@ export default class ContactView extends JetView{
                         const contactID = element.getAttribute("data_id");
                         this.show(`/top/contacts/contact_edit?id=${contactID}`)
 
+                    },
+                    contact_delete: ( event, two, element) => {
+                        const contactID = element.getAttribute("data_id");
+                        contacts.remove(contactID)
+                        this.show(`/top/contacts`)
+
                     }
             }},
             contactDetails,
-            activitiesFooter
+
         ]  };
 	}
 	init(view, url){
@@ -98,7 +110,6 @@ export default class ContactView extends JetView{
         const addForm = activityFormFabric(addFormConfig)
 
         const addWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_ADD_FORM_WINDOW_ID,headName:'Add', form:addForm}))
-
 
     }
     urlChange(view, url){

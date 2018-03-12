@@ -15,6 +15,16 @@ export const contacts = new webix.DataCollection({
 
 });
 
+export const files = new webix.DataCollection({
+    data: [
+        {"id": 1, "name": "Alan Smith", "change_date": 57, "size": 57, "country": "USA"},
+        {"id": 2, "name": "Nina Brown", "change_date": 32, "size": 32, "country": "Germany"},
+        {"id": 3, "name": "Kevin Sallivan", "change_date": 21, "size": 21, "country": "Canada"},
+        {"id": 4, "name": "Sergey Petrov", "change_date": 24, "size": 24, "country": "Russia"},
+        {"id": 5, "name": "Mina Leen", "change_date": 40, "size": 40, "country": "China"},
+    ],
+})
+
 export const activities = new webix.DataCollection({ 
 	url: activitytUrl,
     scheme: {
