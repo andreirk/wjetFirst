@@ -4,13 +4,13 @@ import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
 import {activities, getActivites, getActivityTypes, getContactTypes,activityTypes,contacts } from "../models/records";
 
 
-const ACTIVITY_ADD_FORM_WINDOW_ID = 'ACTIVITY_ADD_FORM_WINDOW';
-const ACTIVITY_EDIT_FORM_WINDOW_ID = 'ACTIVITY_EDIT_FORM_WINDOW';
+export const ACTIVITY_ADD_FORM_WINDOW_ID = 'ACTIVITY_ADD_FORM_WINDOW';
+export const ACTIVITY_EDIT_FORM_WINDOW_ID = 'ACTIVITY_EDIT_FORM_WINDOW';
 
-const ACTIVITY_EDIT_FORM_ID = 'ACTIVITY_EDIT_FORM'
-const ACTIVITY_ADD_FORM_ID = 'ACTIVITY_ADD_FORM'
+export const ACTIVITY_EDIT_FORM_ID = 'ACTIVITY_EDIT_FORM'
+export const ACTIVITY_ADD_FORM_ID = 'ACTIVITY_ADD_FORM'
 
-const View =   {
+export const View =   {
     view:"datatable",
     id: 'mydata',
   
@@ -64,7 +64,7 @@ const View =   {
 
 };
 
-const activitiesHeader = {
+export const activitiesHeader = {
 	cols:[{gravity:5},{view:'button', value:'Add activity', click: function (obj) {
 
         $$(ACTIVITY_ADD_FORM_ID).clear()
