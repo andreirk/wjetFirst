@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-
+import * as moment from 'moment';
 import  {ModalWindow, activityFormFabric} from '../components/activityWindow'
 import {activities, getContactTypes,activityTypes,contacts } from "../models/records";
 
@@ -16,7 +16,7 @@ export const View =   {
     id: 'mydata',
   
     columns:[
-		{ id:'complited', header:'Complited', template:"{common.checkbox()}"},
+		{ id:'completed', header:'Completed', template:"{common.checkbox()}"},
         { id:"TypeID",    header:["Type", {content:"selectFilter"}] , collection: activityTypes  },
         { id:"DueDate",   header: ["DueDate Title", {content:"dateFilter"}, ], editor:'date',},
         { id:"Details",    header: ["Details", {content:"textFilter"}, ], editor:'text',},
@@ -65,24 +65,79 @@ export const View =   {
 
 };
 
+export const filterTabs = {
+		gravity:4,
+		view:"segmented",
+		id:"segFilter",
+		options:[
+			{id:"all", value:"All"},
+			{id:"completed", value:"Completed"},
+			{id:"today", value:"Today"},
+			{id:"overdue", value:"Overdue"},
+			{id:"tomorrow", value:"Tomorrow"},
+			{id:"this_week", value:"This week"},
+			{id:"this_month", value:"This month"}
+		],
+		on:{
+			onChange: function(currentVal, prevVal){
+				const table = $$("mydata");
+				switch (currentVal){
+					case 'all':
+						table.filter();
+						break;
+					case 'completed':
+						table.filter((obj) => {
+							return obj.completed === true;
+						});
+						break;
+					case 'today':
+						table.filter((obj) => {
+							return obj.DueDate === moment().format('DD-MM-YYYY');
+						});
+						break;
+					case 'overdue':
+						break;
+					case 'tomorrow':
+						break;
+					case 'this_week':
+						break;
+					case 'this_month':
+						break;
+
+				}
+
+			}
+		}
+	};
+
 export const activitiesHeader = {
-	cols:[{gravity:5},{view:'button', value:'Add activity', click: function (obj) {
-
-        $$(ACTIVITY_ADD_FORM_ID).clear()
-        $$(ACTIVITY_ADD_FORM_WINDOW_ID).show()
-
-	} }]
+	cols:[
+		{
+			gravity:4,
+		},
+		{
+			view:'button',
+			value:'Add activity',
+			click: function (obj) {
+				$$(ACTIVITY_ADD_FORM_ID).clear()
+				$$(ACTIVITY_ADD_FORM_WINDOW_ID).show()
+			}
+		}]
 }
 
 export default class ActivitiesView extends JetView{
 	config(){
-		return {rows:[activitiesHeader,View, ]};
+		return {rows:[
+            activitiesHeader,
+			filterTabs,
+            View,
+        ]};
 	}
 	init(view, url){
 
 		// edit form init
         const editFormConfig = {
-            formID : ACTIVITY_EDIT_FORM_ID ,
+			formID : ACTIVITY_EDIT_FORM_ID ,
             typesOptions : activityTypes,
             contactsOptions : contacts
         }
@@ -112,7 +167,6 @@ export default class ActivitiesView extends JetView{
         const addWindow =  webix.ui(new ModalWindow({windowID:ACTIVITY_ADD_FORM_WINDOW_ID,headName:'Add', form:addForm}))
 
 		view.queryView({ view:"datatable" }).parse(activities);
-
 
     }
     urlChange(view, url){

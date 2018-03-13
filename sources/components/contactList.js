@@ -9,7 +9,7 @@ const contactListConfig = {
     autoConfig:true,
     select: true,
     template: (obj) => {
-        const fullName = obj.LastName && obj.FirstName ? `${obj.FirstName} ${obj.LastName}` : "No name";
+        const fullName = obj.FirstName  ? `${obj.FirstName} ${obj.LastName}` : "No name";
         const result = `${fullName}`;
         return result;
     },
@@ -21,6 +21,16 @@ export default class contactList extends JetView{
 	config(){
 		return { 
             rows: [
+                {
+                    view:"toolbar",
+                    elements:[
+                        {
+                            view:"text",
+                            placeholder: 'Input here to filter',
+                            id:"list_input"
+                        }
+                    ]
+                },
                 contactListConfig,
                 {
                     view: "button",
@@ -40,6 +50,11 @@ export default class contactList extends JetView{
         contactList.attachEvent("onItemClick", function(id, e, node){
             _this.app.show(`/top/contacts/contact?id=${id}`)
 
+        });
+
+        view.queryView({id: 'list_input'}).attachEvent("onTimedKeyPress",function(){
+            var value = this.getValue().toLowerCase(); // input data is derived
+            contactList.filter('#FirstName#', value);
         });
         
 	}

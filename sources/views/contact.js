@@ -74,7 +74,6 @@ export default class ContactView extends JetView{
                     }
             }},
             contactDetails,
-
         ]  };
 	}
 	init(view, url){

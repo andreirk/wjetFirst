@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 
 export const contactUrl = '/api/v1/contacts/';
 export const activitytUrl = '/api/v1/activities/';
@@ -11,7 +13,8 @@ export const contacts = new webix.DataCollection({
         $init:function(obj){
             obj.value = obj.FirstName ? obj.FirstName : obj.Email;
         }
-    }
+    },
+	save : 'rest->' + contactUrl
 
 });
 
@@ -29,9 +32,11 @@ export const activities = new webix.DataCollection({
 	url: activitytUrl,
     scheme: {
         $init:function(obj){
-            obj.complited = obj.State === 'Open'
+            obj.completed = obj.State === 'Open'
+	        obj.DueDate = moment(obj.DueDate).isValid() ? moment(obj.DueDate).format('DD-MM-YYYY') :  moment(obj.DueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
         }
-    }
+    },
+	save : 'rest->' + activitytUrl
 });
 
 export const activityTypes = new webix.DataCollection({
@@ -40,11 +45,13 @@ export const activityTypes = new webix.DataCollection({
         $init:function(obj){
              obj.value = obj.Value;
         }
-    }
+    },
+	save : 'rest->' + activitiesTypestUrl
 });
 
 export const status = new webix.DataCollection({ 
-	url: statusesUrl
+	url: statusesUrl,
+	save : 'rest->' + statusesUrl
 });
 
 
